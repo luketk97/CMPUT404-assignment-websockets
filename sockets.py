@@ -85,8 +85,6 @@ myWorld = World()
 
 def set_listener( entity, data ):
     ''' do something with the update ! '''
-    ''' sets up a new object based on the given data and send
-        JSONfied object to client                         '''
     update = {entity:data}
     send_all_json(update)
 
@@ -107,11 +105,13 @@ def read_ws(ws,client):
             print("WS RECV: %s" % msg)
             if (msg is not None):
                 packet = json.loads(msg)
+                for item in packet:
+                    myWorld.set(item, packet[item])
                 send_all_json( packet )
             else:
                 break
     except:
-        print("Done")
+        '''Done'''
 
 @sockets.route('/subscribe')
 def subscribe_socket(ws):
